@@ -46,7 +46,8 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     //Delegate method
     //Gets called every time the user scrolls the picker. Records the row number that was selected (when the scrolling stops)
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        print(coinManager.currencyArray[row])
+        let selectedCurrency = (coinManager.currencyArray[row])
+        coinManager.getCoinPrice(for: selectedCurrency)
     }
 
 
