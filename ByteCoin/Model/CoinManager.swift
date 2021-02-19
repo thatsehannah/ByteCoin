@@ -30,14 +30,26 @@ struct CoinManager {
                 }
                 
                 if let safeData = data {
-                    let dataString = String(data: safeData, encoding: .utf8)!
-                    print(dataString)
+                    if let rate = self.parseJSON(safeData){
+                        print(rate)
+                    }
                 }
             }
-            
             task.resume()
         }
-        
+    }
+    
+    func parseJSON(_ coinData: Data) -> Double? {
+        let decoder = JSONDecoder()
+        do {
+            let decodedData = try decoder.decode(CoinModel.self, from: coinData)
+            let rate = decodedData.rate
+            
+            return rate
+        } catch {
+            print(error)
+            return nil
+        }
     }
 
     
