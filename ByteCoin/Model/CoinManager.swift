@@ -24,8 +24,14 @@ struct CoinManager {
         if let url = URL(string: urlString){
             let session = URLSession(configuration: .default)
             let task = session.dataTask(with: url) {(data, response, error) in
+                if error != nil {
+                    print(error!)
+                    return
+                }
+                
                 if let safeData = data {
-                    print(String(data: safeData, encoding: .utf8)!)
+                    let dataString = String(data: safeData, encoding: .utf8)!
+                    print(dataString)
                 }
             }
             
