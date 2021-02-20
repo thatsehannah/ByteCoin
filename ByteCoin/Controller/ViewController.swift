@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, CoinManagerDelegate {
     
     
 
@@ -16,28 +16,29 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     @IBOutlet weak var currencyLabel: UILabel!
     @IBOutlet weak var currencyPicker: UIPickerView!
     
-    let coinManager = CoinManager()
+    var coinManager = CoinManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         currencyPicker.dataSource = self
         currencyPicker.delegate = self
+        coinManager.delegate = self
     }
     
-    //DataSource protocol
+    //DataSource method
     //Determines the number of columns in pickerView
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    //DataSource protocol
+    //DataSource method
     //This method asks for how many rows the pickerView will have
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return coinManager.currencyArray.count
     }
     
-    //Delegate protocol
+    //Delegate method
     //This method asks for the the title of each row in the pickerView, so it will be called (numberOfRowsInComponent) times
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return coinManager.currencyArray[row]
@@ -49,7 +50,16 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         let selectedCurrency = (coinManager.currencyArray[row])
         coinManager.getCoinPrice(for: selectedCurrency)
     }
-
-
+    
+    func didCurrencyGetSelected(_ coinManager: CoinManager, rate: Double) {
+        DispatchQueue.main.async {
+            self.bitcoinLabel.text = String(format: "%.2f", rate)
+            
+        }
+    }
+    
+    func didFailWithError(error: Error) {
+        print(error)
+    }
 }
 
