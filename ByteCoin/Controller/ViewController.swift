@@ -51,10 +51,10 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         coinManager.getCoinPrice(for: selectedCurrency)
     }
     
-    func didCurrencyGetSelected(_ coinManager: CoinManager, rate: Double) {
+    func didCurrencyGetSelected(rate: String, currency: String) {
         DispatchQueue.main.async {
-            self.bitcoinLabel.text = String(format: "%.2f", rate)
-            
+            self.bitcoinLabel.text = rate
+            self.currencyLabel.text = currency
         }
     }
     
